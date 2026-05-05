@@ -1,0 +1,115 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: system-ui, sans-serif;
+  background: #f5f5f5;
+  color: #222;
+}
+
+#navbar {
+  display: flex;
+  gap: 8px;
+  padding: 10px 16px;
+  background: #1a1a2e;
+}
+
+#navbar button {
+  padding: 6px 14px;
+  background: #16213e;
+  color: #eee;
+  border: 1px solid #444;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#navbar button:hover { background: #0f3460; }
+
+#app { padding: 20px; }
+
+.screen.hidden { display: none; }
+
+.card {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 16px;
+  margin-bottom: 12px;
+  cursor: pointer;
+}
+
+.card:hover { background: #f0f0ff; }
+
+button {
+  padding: 8px 16px;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  cursor: pointer;
+  background: #eee;
+}
+
+button:hover { background: #ddd; }
+
+button.primary {
+  background: #1a1a2e;
+  color: white;
+  border-color: #1a1a2e;
+}
+
+button.primary:hover { background: #0f3460; }
+
+button.danger {
+  background: #c0392b;
+  color: white;
+  border-color: #c0392b;
+}
+
+input, select {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+label { display: block; font-weight: bold; margin-bottom: 4px; }
+
+.form-group { margin-bottom: 14px; }
+
+h1 { margin-bottom: 16px; }
+h2 { margin-bottom: 12px; }
+
+.today-box {
+  background: #e8f5e9;
+  border: 2px solid #43a047;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.assignment-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 6px;
+  font-size: 1.1em;
+}
+
+.schedule-row {
+  display: flex;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.schedule-row.completed { color: #999; }
+.schedule-row.skipped { color: #bbb; font-style: italic; }
+
+.tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.85em;
+  background: #e0e0e0;
+}
+
+.flex-row { display: flex; gap: 8px; align-items: center; }
+.mt { margin-top: 10px; }

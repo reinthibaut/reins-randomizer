@@ -4,8 +4,37 @@
   <meta charset="UTF-8" />
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'" />
   <title>Classroom Randomizer</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <h1>Classroom Randomizer — coming soon</h1>
+  <nav id="navbar">
+    <button onclick="App.goHome()">Home</button>
+    <button id="nav-randomizer">Randomizer</button>
+    <button id="nav-nameset">Naam sets</button>
+  </nav>
+
+  <main id="app">
+    <div id="screen-home" class="screen"></div>
+    <div id="screen-randomizer" class="screen hidden"></div>
+    <div id="screen-nameset-manager" class="screen hidden"></div>
+    <div id="screen-template-editor" class="screen hidden"></div>
+    <div id="screen-template-view" class="screen hidden"></div>
+  </main>
+
+  <!-- Load lib files first — order matters -->
+  <script src="lib/utils.js"></script>
+  <script src="lib/rotation.js"></script>
+  <script src="lib/scheduler.js"></script>
+  <script src="lib/data.js"></script>
+
+  <!-- Load screens -->
+  <script src="screens/home.js"></script>
+  <script src="screens/nameset-manager.js"></script>
+  <script src="screens/template-editor.js"></script>
+  <script src="screens/template-view.js"></script>
+  <script src="screens/randomizer.js"></script>
+
+  <!-- App router — loaded last -->
+  <script src="app.js"></script>
 </body>
 </html>
