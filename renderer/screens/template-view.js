@@ -55,6 +55,7 @@ const TemplateView = (function () {
       <div class="flex-row">
         <h1>${t.name}</h1>
         <button onclick="TemplateEditor.render('${t.id}'); App.showScreen('template-editor')">Bewerken</button>
+        <button class="danger" onclick="TemplateView.deleteTemplate('${t.id}')">Verwijderen</button>
         <button onclick="App.goHome()">Terug</button>
       </div>
       <p>Naam set: <strong>${ns ? ns.name : '?'}</strong></p>
@@ -75,5 +76,14 @@ const TemplateView = (function () {
     await render(templateId);
   }
 
-  return { render, markDone };
+  async function deleteTemplate(templateId) {
+    if (!confirm('Template verwijderen? Dit kan niet ongedaan worden gemaakt.')) return;
+    const templates = await Data.loadTemplates();
+    await Data.saveTemplates(templates.filter(t => t.id !== templateId));
+    const history = await Data.loadHistory();
+    await Data.saveHistory(history.filter(h => h.templateId !== templateId));
+    App.goHome();
+  }
+
+  return { render, markDone, deleteTemplate };
 })();
