@@ -37,7 +37,7 @@ const Utils = (function () {
     return dates;
   }
 
-  return { generateId, getISOWeekday, formatDate, addDays, isInVacation, getAllMatchingDates };
+  return { generateId, getISOWeekday, addDays, isInVacation, getAllMatchingDates };
 })();
 
 if (typeof module !== 'undefined') module.exports = Utils;
