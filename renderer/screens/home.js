@@ -15,7 +15,7 @@ const HomeScreen = (function () {
         `).join('');
 
     document.getElementById('screen-home').innerHTML = `
-      <h1>Classroom Randomizer</h1>
+      <h1>Rein's Randomizer</h1>
       ${cardsHtml}
       <div class="flex-row mt">
         <button class="primary" onclick="TemplateEditor.render(null); App.showScreen('template-editor')">
