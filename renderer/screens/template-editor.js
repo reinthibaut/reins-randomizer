@@ -4,6 +4,14 @@ const TemplateEditor = (function () {
 
   const DAY_LABELS = ['', 'Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za', 'Zo'];
 
+  const BELGIAN_VACATIONS = [
+    { name: 'Herfstvakantie',  from: '2025-10-27', to: '2025-11-02' },
+    { name: 'Kerstvakantie',   from: '2025-12-22', to: '2026-01-04' },
+    { name: 'Krokusvakantie',  from: '2026-02-16', to: '2026-02-22' },
+    { name: 'Paasvakantie',    from: '2026-04-06', to: '2026-04-19' },
+    { name: 'Zomervakantie',   from: '2026-07-01', to: '2026-08-31' },
+  ];
+
   async function render(templateId) {
     editingId = templateId;
     const nameSets = await Data.loadNameSets();
@@ -58,19 +66,30 @@ const TemplateEditor = (function () {
       </div>
 
       <div class="form-group">
-        <label>Schooljaar start</label>
+        <label>Start periode</label>
         <input type="date" id="t-start" value="${t.schoolYearStart}" />
       </div>
 
       <div class="form-group">
-        <label>Schooljaar einde</label>
+        <label>Einde periode</label>
         <input type="date" id="t-end" value="${t.schoolYearEnd}" />
       </div>
 
       <div class="form-group">
         <label>Vakantieperiodes</label>
+        <div style="margin-bottom:8px">
+          <strong style="font-size:0.9em">Bekende Belgische schoolvakanties 2025–2026:</strong><br/>
+          ${BELGIAN_VACATIONS.map((bv, i) => `
+            <label style="display:inline-flex;gap:4px;margin-right:14px;margin-top:6px;font-weight:normal;">
+              <input type="checkbox" class="bv-check" data-index="${i}"
+                ${vacations.some(v => v.from === bv.from && v.to === bv.to) ? 'checked' : ''}
+                onchange="TemplateEditor.toggleBelgian(${i}, this.checked)" />
+              ${bv.name} (${bv.from} – ${bv.to})
+            </label>
+          `).join('')}
+        </div>
         <div id="vacations-list"></div>
-        <button onclick="TemplateEditor.addVacation()">+ Vakantie toevoegen</button>
+        <button onclick="TemplateEditor.addVacation()">+ Eigen datum toevoegen</button>
       </div>
 
       <div class="form-group">
@@ -178,5 +197,18 @@ const TemplateEditor = (function () {
     App.goHome();
   }
 
-  return { render, addTask, removeTask, addVacation, removeVacation, save };
+  function toggleBelgian(index, checked) {
+    const bv = BELGIAN_VACATIONS[index];
+    if (checked) {
+      if (!vacations.some(v => v.from === bv.from && v.to === bv.to)) {
+        vacations.push({ from: bv.from, to: bv.to });
+      }
+    } else {
+      const i = vacations.findIndex(v => v.from === bv.from && v.to === bv.to);
+      if (i !== -1) vacations.splice(i, 1);
+    }
+    renderVacations();
+  }
+
+  return { render, addTask, removeTask, addVacation, removeVacation, save, toggleBelgian };
 })();
