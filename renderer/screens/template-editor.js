@@ -27,15 +27,20 @@ const TemplateEditor = (function () {
       `<option value="${ns.id}" ${ns.id === t.nameSetId ? 'selected' : ''}>${ns.name}</option>`
     ).join('');
 
-    const tasksHtml = t.tasks.map((task, i) => `
+    const normalizedTasks = t.tasks.map(task =>
+      typeof task === 'string' ? { name: task, count: 1 } : task
+    );
+    const tasksHtml = normalizedTasks.map((task, i) => `
       <div class="flex-row">
-        <input type="text" id="task-${i}" value="${task}" />
+        <input type="text" id="task-name-${i}" value="${task.name}" />
+        <input type="number" id="task-count-${i}" value="${task.count}" min="1" style="width:64px" title="Aantal personen" />
+        <span style="font-size:0.85em;color:#666;">personen</span>
         <button onclick="TemplateEditor.removeTask(${i})">x</button>
       </div>
     `).join('');
 
     const daysHtml = [1,2,3,4,5,6,7].map(d => `
-      <label style="display:inline-flex;gap:4px;margin-right:10px;">
+      <label style="display:flex;align-items:center;gap:8px;margin-bottom:4px;font-weight:normal;">
         <input type="checkbox" name="day" value="${d}" ${t.scheduleDays.includes(d) ? 'checked' : ''} />
         ${DAY_LABELS[d]}
       </label>
@@ -80,12 +85,12 @@ const TemplateEditor = (function () {
         <div style="margin-bottom:8px">
           <strong style="font-size:0.9em">Bekende Belgische schoolvakanties 2025–2026:</strong><br/>
           ${BELGIAN_VACATIONS.map((bv, i) => `
-            <label style="display:inline-flex;gap:4px;margin-right:14px;margin-top:6px;font-weight:normal;">
+            <div style="display:inline-flex;gap:4px;align-items:center;margin-right:14px;margin-top:6px;">
               <input type="checkbox" class="bv-check" data-index="${i}"
                 ${vacations.some(v => v.from === bv.from && v.to === bv.to) ? 'checked' : ''}
                 onchange="TemplateEditor.toggleBelgian(${i}, this.checked)" />
-              ${bv.name} (${bv.from} – ${bv.to})
-            </label>
+              <span>${bv.name} (${bv.from} – ${bv.to})</span>
+            </div>
           `).join('')}
         </div>
         <div id="vacations-list"></div>
@@ -127,12 +132,12 @@ const TemplateEditor = (function () {
     const i = list.children.length;
     const div = document.createElement('div');
     div.className = 'flex-row';
-    div.innerHTML = `<input type="text" id="task-${i}" value="" /><button onclick="TemplateEditor.removeTask(${i})">x</button>`;
+    div.innerHTML = `<input type="text" id="task-name-${i}" value="" /><input type="number" id="task-count-${i}" value="1" min="1" style="width:64px" title="Aantal personen" /><span style="font-size:0.85em;color:#666;">personen</span><button onclick="TemplateEditor.removeTask(${i})">x</button>`;
     list.appendChild(div);
   }
 
   function removeTask(i) {
-    const el = document.getElementById('task-' + i);
+    const el = document.getElementById('task-name-' + i);
     if (el) el.closest('.flex-row').remove();
   }
 
@@ -153,8 +158,12 @@ const TemplateEditor = (function () {
     const nameSetId = document.getElementById('t-nameset').value;
     if (!nameSetId) { alert('Kies een naam set.'); return; }
 
-    const taskInputs = document.querySelectorAll('#tasks-list input');
-    const tasks = [...taskInputs].map(i => i.value.trim()).filter(v => v.length > 0);
+    const tasks = [];
+    document.querySelectorAll('#tasks-list .flex-row').forEach(row => {
+      const name = row.querySelector('input[type="text"]')?.value.trim() || '';
+      const count = parseInt(row.querySelector('input[type="number"]')?.value) || 1;
+      if (name) tasks.push({ name, count });
+    });
     if (tasks.length === 0) { alert('Voeg minstens één taak toe.'); return; }
 
     const selectedDays = [...document.querySelectorAll('input[name="day"]:checked')].map(cb => Number(cb.value));

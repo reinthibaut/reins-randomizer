@@ -71,7 +71,7 @@ input, select {
   margin-bottom: 8px;
 }
 
-label { display: block; font-weight: bold; margin-bottom: 4px; }
+.form-group > label { display: block; font-weight: bold; margin-bottom: 4px; }
 
 .form-group { margin-bottom: 14px; }
 

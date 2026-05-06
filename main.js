@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const path = require('path');
 const fs = require('fs');
 
@@ -50,3 +50,15 @@ ipcMain.handle('read-templates', () => readJSON(FILES.templates));
 ipcMain.handle('write-templates', (_, data) => { writeJSON(FILES.templates, data); });
 ipcMain.handle('read-history', () => readJSON(FILES.history));
 ipcMain.handle('write-history', (_, data) => { writeJSON(FILES.history, data); });
+
+ipcMain.handle('save-text-file', async (_, content, defaultName) => {
+  const { filePath, canceled } = await dialog.showSaveDialog({
+    defaultPath: defaultName,
+    filters: [{ name: 'Tekstbestand', extensions: ['txt'] }],
+  });
+  if (!canceled && filePath) {
+    fs.writeFileSync(filePath, content, 'utf-8');
+    return { saved: true };
+  }
+  return { saved: false };
+});

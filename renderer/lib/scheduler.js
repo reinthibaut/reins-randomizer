@@ -19,8 +19,10 @@ const Scheduler = (function () {
     for (const entry of completedEntries) {
       completedByDate[entry.date] = entry;
       // Tally picks from completed entries to maintain fairness
-      for (const student of Object.values(entry.assignments)) {
-        pickCounts[student] = (pickCounts[student] || 0) + 1;
+      for (const studentStr of Object.values(entry.assignments)) {
+        for (const student of studentStr.split(', ')) {
+          pickCounts[student] = (pickCounts[student] || 0) + 1;
+        }
       }
     }
 

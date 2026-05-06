@@ -9,11 +9,20 @@ const Rotation = (function () {
 
     const assignments = {};
     const updatedCounts = { ...pickCounts };
+    let pointer = 0;
 
-    for (let i = 0; i < tasks.length; i++) {
-      const student = sorted[i];
-      assignments[tasks[i]] = student;
-      updatedCounts[student] = (updatedCounts[student] || 0) + 1;
+    for (const task of tasks) {
+      const taskName = typeof task === 'string' ? task : task.name;
+      const count = typeof task === 'string' ? 1 : (task.count || 1);
+      const picked = [];
+
+      for (let slot = 0; slot < count && pointer < sorted.length; slot++) {
+        const person = sorted[pointer++];
+        picked.push(person);
+        updatedCounts[person] = (updatedCounts[person] || 0) + 1;
+      }
+
+      assignments[taskName] = picked.join(', ');
     }
 
     return { assignments, updatedCounts };
