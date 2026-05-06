@@ -71,7 +71,7 @@ const Groups = (function () {
     list.innerHTML = allEntries.map((name, i) => `
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
         <input type="checkbox" checked onchange="Groups.onAbsentToggle(${i}, this.checked)" />
-        <span>${name}</span>
+        <span>${escapeHtml(name)}</span>
       </div>
     `).join('');
   }
@@ -114,6 +114,14 @@ const Groups = (function () {
     if (arrow) arrow.textContent = isOpen ? '▶' : '▼';
   }
 
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
   function splitIntoGroups(names, groupCount) {
     const shuffled = [...names];
     for (let i = shuffled.length - 1; i > 0; i--) {
@@ -141,7 +149,7 @@ const Groups = (function () {
     }
 
     const mode = document.getElementById('g-mode').value;
-    const value = Math.max(1, parseInt(document.getElementById('g-value').value) || 1);
+    const value = Math.max(1, parseInt(document.getElementById('g-value').value, 10) || 1);
 
     const groupCount = mode === 'count'
       ? Math.min(value, activeNames.length)
@@ -154,13 +162,14 @@ const Groups = (function () {
         ${groups.map((group, i) => `
           <div class="card" style="min-width:140px;cursor:default;">
             <strong>Groep ${i + 1}</strong>
-            ${group.map(name => `<div style="margin-top:4px;">${name}</div>`).join('')}
+            ${group.map(name => `<div style="margin-top:4px;">${escapeHtml(name)}</div>`).join('')}
           </div>
         `).join('')}
       </div>
     `;
 
-    document.getElementById('g-reshuffle').style.display = '';
+    const reshuffleBtn = document.getElementById('g-reshuffle');
+    if (reshuffleBtn) reshuffleBtn.style.display = '';
   }
 
   return { render, onNameSetChange, onModeChange, toggleAbsent, onAbsentToggle, generate };
