@@ -8,7 +8,7 @@ const Groups = (function () {
     const nsOptions = nameSets.length === 0
       ? '<option value="">Geen naam sets — maak er eerst een aan</option>'
       : nameSets.map(ns =>
-          `<option value="${ns.id}">${ns.name} (${ns.entries.length} namen)</option>`
+          `<option value="${ns.id}">${escapeHtml(ns.name)} (${ns.entries.length} namen)</option>`
         ).join('');
 
     document.getElementById('screen-groups').innerHTML = `
