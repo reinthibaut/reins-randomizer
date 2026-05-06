@@ -18,6 +18,10 @@ const App = (function () {
       NamesetManager.render();
       showScreen('nameset-manager');
     };
+    document.getElementById('nav-groups').onclick = () => {
+      Groups.render();
+      showScreen('groups');
+    };
 
     await HomeScreen.render();
     showScreen('home');

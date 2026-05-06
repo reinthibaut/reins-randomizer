@@ -11,6 +11,7 @@
     <button onclick="App.goHome()">Home</button>
     <button id="nav-randomizer">Randomizer</button>
     <button id="nav-nameset">Naam sets</button>
+    <button id="nav-groups">Groepen</button>
   </nav>
 
   <main id="app">
@@ -19,6 +20,7 @@
     <div id="screen-nameset-manager" class="screen hidden"></div>
     <div id="screen-template-editor" class="screen hidden"></div>
     <div id="screen-template-view" class="screen hidden"></div>
+    <div id="screen-groups" class="screen hidden"></div>
   </main>
 
   <!-- Load lib files first — order matters -->
@@ -33,6 +35,7 @@
   <script src="screens/template-editor.js"></script>
   <script src="screens/template-view.js"></script>
   <script src="screens/randomizer.js"></script>
+  <script src="screens/groups.js"></script>
 
   <!-- App router — loaded last -->
   <script src="app.js"></script>
