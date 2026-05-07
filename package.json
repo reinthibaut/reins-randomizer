@@ -19,8 +19,10 @@
   "build": {
     "appId": "com.rein.classroom-randomizer",
     "productName": "Rein's Randomizer",
+    "icon": "build/icon.ico",
     "win": {
-      "target": "nsis"
+      "target": "nsis",
+      "icon": "build/icon.ico"
     }
   }
 }
